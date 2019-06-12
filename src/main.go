@@ -1,9 +1,10 @@
 package main
 
 import (
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
