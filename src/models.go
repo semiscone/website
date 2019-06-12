@@ -2,19 +2,17 @@ package main
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+  "github.com/jinzhu/gorm"
 )
 
 // User table definition
 type User struct {
 	gorm.Model
 	id                      int `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
-	email                   string
-	username                string
-	roleID                  string
-	passwordHash            string
+	Email                   string
+	Username                string
+	RoleID                  string
+	PasswordHash            string
 	accessToken             string
 	appKey                  string
 	appSecret               string
@@ -38,15 +36,4 @@ type User struct {
 	autoDeliver             bool
 	syncHistory             bool
 	autoDeliverSecuredTrans bool
-}
-
-func initDatabase() {
-	db, err := gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		panic("failed to connect database")
-	}
-	defer db.Close()
-
-	// Migrate the schema
-	db.AutoMigrate(&User{})
 }
