@@ -1,0 +1,3 @@
+[submodule "src/static/AdminLTE"]
+	path = src/static/AdminLTE
+	url = https://github.com/ColorlibHQ/AdminLTE.git
