@@ -1,35 +1,37 @@
 package main
 
 import (
-  "os"
-  "fmt"
-  "github.com/jinzhu/gorm"
-  log "github.com/sirupsen/logrus"
+	"fmt"
 	"github.com/go-pg/pg"
+	"github.com/jinzhu/gorm"
+	log "github.com/sirupsen/logrus"
+	"os"
 
-  _ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
+
+var db *gorm.DB
 
 func initDatabase() {
 
-  host := os.Getenv("DATABASE_HOST")
-  port := 5432
-  user := os.Getenv("DATABASE_USER")
-  password := os.Getenv("DATABASE_PASSWORD")
-  database := "hummingbird"
+	host := os.Getenv("DATABASE_HOST")
+	port := 5432
+	user := os.Getenv("DATABASE_USER")
+	password := os.Getenv("DATABASE_PASSWORD")
+	database := "hummingbird"
 
-  checkAndCreateDB(fmt.Sprintf("%v:%v", host, port), user, password, database)
-  connection := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", 
-  host, port, user, password, database)
-  
-  log.Infof("connection: %s", connection)
-  db, err := gorm.Open("postgres", connection)
+	checkAndCreateDB(fmt.Sprintf("%v:%v", host, port), user, password, database)
+	connection := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, database)
 
+	log.Infof("connection: %s", connection)
+	var err error
+	db, err = gorm.Open("postgres", connection)
 	if err != nil {
-    log.Error(err)
+		log.Error(err)
 		panic("failed to connect database")
 	}
-	defer db.Close()
+	// defer db.Close()
 
 	// Migrate the schema
 	db.AutoMigrate(&User{})
@@ -57,8 +59,8 @@ func checkAndCreateDB(addr, user, passwd, database string) bool {
 		if err2 != nil {
 			log.Error("create target database error")
 			return false
-		  } 
-		  
+		}
+
 		log.Info("create target database successfully")
 		return true
 	}
@@ -85,4 +87,20 @@ func connectDB(addr, user, passwd, database string) *pg.DB {
 		return nil
 	}
 	return db
+}
+
+func getUserInfo(username string) *User {
+	var user User
+	db.Where("name = ?", username).First(&user)
+	return &user
+}
+
+func updateUserInfo(user *User) error {
+	err := db.Save(&user).Error
+	return err
+}
+
+func addUser(user *User) error {
+	err := db.Create(user).Error
+	return err
 }

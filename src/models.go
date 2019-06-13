@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/jinzhu/gorm"
 	"time"
-  "github.com/jinzhu/gorm"
 )
 
 // User table definition
@@ -13,27 +13,27 @@ type User struct {
 	Username                string
 	RoleID                  string
 	PasswordHash            string
-	accessToken             string
-	appKey                  string
-	appSecret               string
-	tokenValid              time.Time
-	confirmed               bool
-	name                    string
-	location                string
-	aboutMe                 string
+	AccessToken             string
+	AppKey                  string
+	AppSecret               string
+	TokenValid              time.Time
+	Confirmed               bool
+	Name                    string
+	Location                string
+	AboutMe                 string
 	memberSince             time.Time
-	firstSeen               string
-	lastseen                string
-	avatarHash              string
-	posts                   string
-	releases                string
-	lastAuthFailedTime      time.Time
-	lastAuthFailedTimes     int
-	lastSyncTime            time.Time
-	validTime               time.Time
-	points                  int
-	phone                   string
-	autoDeliver             bool
-	syncHistory             bool
-	autoDeliverSecuredTrans bool
+	FirstSeen               string
+	LastSeen                string
+	AvatarHash              string
+	Posts                   string
+	Releases                string
+	LastAuthFailedTime      time.Time
+	LastAuthFailedTimes     int
+	LastSyncTime            time.Time
+	ValidTime               time.Time
+	Points                  int
+	Phone                   string
+	AutoDeliver             bool
+	SyncHistory             bool
+	AutoDeliverSecuredTrans bool
 }
