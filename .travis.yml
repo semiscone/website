@@ -1,3 +1,5 @@
+language: go
+
 before_install:
   - docker build -t semiscone/website -f Dockerfile .
 
