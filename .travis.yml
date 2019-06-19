@@ -15,5 +15,5 @@ after_success:
   
   # Tencent Hub
   - docker build -t hub.tencentyun.com/semiscone/website .
-  - echo "$TENCENT_PASSWORD" | docker login --username=semiscone hub.tencentyun.com
+  - echo "$TENCENT_PASSWORD" | docker login -u semiscone hub.tencentyun.com --password-stdin
   - docker push hub.tencentyun.com/semiscone/website
