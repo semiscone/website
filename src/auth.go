@@ -8,31 +8,53 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"io"
+	"net/http"
 	"regexp"
 	"time"
 )
 
+func registerAuthHandler(r *gin.Engine) {
+	r.GET("/login", login)
+	r.POST("/login", login)
+}
+
 func login(c *gin.Context) {
+	session := sessions.Default(c)
+
+	if c.Request.Method == "GET" {
+		data := gin.H{
+			"MsgInfo": session.Flashes("Info"),
+			"MsgWarn": session.Flashes("Warn"),
+		}
+		session.Save()
+		c.HTML(http.StatusOK, "login.html", data)
+		return
+	}
+
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 	h := md5.New()
 	io.WriteString(h, password)
 	buffer := bytes.NewBuffer(nil)
 	fmt.Fprintf(buffer, "%x", h.Sum(nil))
-	newPass := buffer.String()
+	inputPass := buffer.String()
 
 	userInfo := getUserInfo(username)
-	if userInfo.PasswordHash == newPass {
-		userInfo.LastSeen = time.Now().Format("2006-01-02 15:04:05")
-		updateUserInfo(userInfo)
-
-		session := sessions.Default(c)
-		session.Set("uid", userInfo.id)
-		session.Set("username", userInfo.Name)
-		session.Save()
-
-		c.Redirect(302, "/dash")
+	if userInfo.PasswordHash != inputPass {
+		msg := fmt.Sprintf("The password is not matched!")
+		session.AddFlash(msg, "Warn")
+		log.Info(msg)
+		c.Redirect(http.StatusMovedPermanently, "/login")
 	}
+
+	userInfo.LastSeen = time.Now().Format("2006-01-02 15:04:05")
+	updateUserInfo(userInfo)
+
+	session.Set("uid", userInfo.id)
+	session.Set("username", userInfo.Name)
+	session.Save()
+
+	c.Redirect(http.StatusMovedPermanently, "/dash")
 }
 
 func register(c *gin.Context) {
@@ -119,4 +141,21 @@ func Prepare(c *gin.Context) {
 
 	log.Infof("User [%v] login", sessionUsername)
 	return
+}
+
+// AuthRequired to Authenticate User
+func AuthRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		sessionID := session.Get("uid")
+		sessionUsername := session.Get("username")
+		if sessionID == nil {
+			c.Redirect(http.StatusMovedPermanently, "/login")
+			return
+		}
+
+		log.Infof("User [%v] login", sessionUsername)
+		// Continue down the chain to handler etc
+		c.Next()
+	}
 }

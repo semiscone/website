@@ -8,7 +8,12 @@ import (
 )
 
 func registerDashboardHandler(r *gin.Engine) {
-	r.GET("/dash", dashboard)
+	private := r.Group("/private")
+	{
+		private.GET("/dash", dashboard)
+		private.GET("/dashboard", dashboard)
+	}
+	private.Use(AuthRequired())
 }
 
 func dashboard(c *gin.Context) {
