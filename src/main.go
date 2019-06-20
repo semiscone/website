@@ -29,7 +29,10 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/", index)
 	r.GET("/index.html", index)
-	r.GET("/sidebar", side)
+	r.GET("/basic.html", basic)
+	r.GET("/standard.html", standard)
+	r.GET("/wide.html", wide)
+	r.GET("/sidebar.html", sidebar)
 
 	registerAuthHandler(r)
 	registerDashboardHandler(r)
@@ -86,6 +89,21 @@ func index(c *gin.Context) {
 }
 
 
-func side(c *gin.Context) {
+func basic(c *gin.Context) {
+	c.HTML(http.StatusOK, "basic.html", nil)
+}
+
+
+func standard(c *gin.Context) {
+	c.HTML(http.StatusOK, "standard.html", nil)
+}
+
+
+func wide(c *gin.Context) {
+	c.HTML(http.StatusOK, "wide.html", nil)
+}
+
+
+func sidebar(c *gin.Context) {
 	c.HTML(http.StatusOK, "sidebar.html", nil)
 }
