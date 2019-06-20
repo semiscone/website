@@ -1,13 +1,15 @@
+image: go
 
 stages:
   - build
   - test
   - deploy
 
-docker build:
+build:
   stage: build
   script:
-    - docker build -t semiscone/website -f Dockerfile .
+    - cd src 
+    - go build
 
 test:  
   script:
