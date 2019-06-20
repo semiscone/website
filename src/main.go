@@ -29,7 +29,9 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/", index)
 	r.GET("/index.html", index)
+	r.GET("/sidebar", side)
 
+	registerAuthHandler(r)
 	registerDashboardHandler(r)
 	return r
 }
@@ -81,4 +83,9 @@ func main() {
 
 func index(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", nil)
+}
+
+
+func side(c *gin.Context) {
+	c.HTML(http.StatusOK, "sidebar.html", nil)
 }

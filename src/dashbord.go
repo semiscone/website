@@ -14,6 +14,8 @@ func registerDashboardHandler(r *gin.Engine) {
 		private.GET("/dashboard", dashboard)
 	}
 	private.Use(AuthRequired())
+
+	r.GET("/d", dashboard)
 }
 
 func dashboard(c *gin.Context) {
