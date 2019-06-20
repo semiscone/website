@@ -3,7 +3,6 @@ image: golang
 stages:
   - build
   - test
-  - deploy
 
 build:
   stage: build
@@ -13,19 +12,8 @@ build:
     - go build
 
 test:  
+  stage: test
   script:
-    - echo "Skip test..."
-
-deploy:
-  stage: deploy
-  script:
-    # - docker build -t semiscone/multi-client .
-    # Log in to the docker CLI
-    # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    # Take those images and push them to docker hub
-    # - docker push semiscone/website
-  
-    # Tencent Hub
-    - docker build -t hub.tencentyun.com/semiscone/website .
-    - echo "$TENCENT_PASSWORD" | docker login -u semiscone hub.tencentyun.com --password-stdin
-    - docker push hub.tencentyun.com/semiscone/website
+    - cd src 
+    - go get -d .
+    - go test
