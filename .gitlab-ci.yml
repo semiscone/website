@@ -1,9 +1,10 @@
+
 stages:
   - build
   - test
   - deploy
 
-build:
+docker build:
   stage: build
   script:
     - docker build -t semiscone/website -f Dockerfile .
