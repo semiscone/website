@@ -9,6 +9,7 @@ build:
   stage: build
   script:
     - cd src 
+    - go get -d .
     - go build
 
 test:  
