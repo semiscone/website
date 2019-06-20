@@ -1,0 +1,19 @@
+image: go
+
+before_install:
+  - docker build -t semiscone/website -f Dockerfile .
+
+script:
+  - echo "Skip test..."
+
+after_success:
+  # - docker build -t semiscone/multi-client .
+  # Log in to the docker CLI
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  # - docker push semiscone/website
+  
+  # Tencent Hub
+  - docker build -t hub.tencentyun.com/semiscone/website .
+  - echo "$TENCENT_PASSWORD" | docker login -u semiscone hub.tencentyun.com --password-stdin
+  - docker push hub.tencentyun.com/semiscone/website
