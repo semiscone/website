@@ -437,5 +437,4 @@ $(document).ready(function() {
     });
 
     setIcons(iconPanels);
-    shouldHideSidebar();
 });
