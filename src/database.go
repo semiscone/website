@@ -14,10 +14,10 @@ var db *gorm.DB
 
 func initDatabase() {
 
-	host := os.Getenv("DATABASE_HOST")
+	host := os.Getenv("POSTGRES_HOST")
 	port := 5432
-	user := os.Getenv("DATABASE_USER")
-	password := os.Getenv("DATABASE_PASSWORD")
+	user := os.Getenv("POSTGRES_USER")
+	password := os.Getenv("POSTGRES_PASSWORD")
 	database := "hummingbird"
 
 	checkAndCreateDB(fmt.Sprintf("%v:%v", host, port), user, password, database)

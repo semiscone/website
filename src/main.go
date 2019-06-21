@@ -80,7 +80,7 @@ func main() {
 	router := setupRouter()
 
 	log.Printf("HTTP Server Launching...")
-	ret := router.Run(":80")
+	ret := router.Run(":5000")
 	log.Errorf("Failed reasion: %s", ret)
 }
 
@@ -88,21 +88,17 @@ func index(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", nil)
 }
 
-
 func basic(c *gin.Context) {
 	c.HTML(http.StatusOK, "basic.html", nil)
 }
-
 
 func standard(c *gin.Context) {
 	c.HTML(http.StatusOK, "standard.html", nil)
 }
 
-
 func wide(c *gin.Context) {
 	c.HTML(http.StatusOK, "wide.html", nil)
 }
-
 
 func sidebar(c *gin.Context) {
 	c.HTML(http.StatusOK, "sidebar.html", nil)

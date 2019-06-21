@@ -30,6 +30,6 @@ VOLUME  ${WORKDIR}
 
 COPY src/static static
 
-EXPOSE 80
+EXPOSE 5000
 
 ENTRYPOINT [ "/website" ]
