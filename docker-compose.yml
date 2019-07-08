@@ -1,20 +1,40 @@
 version: '3.3'
 
 services:
+  # Use postgres/example user/password credentials
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres_password
+    volumes:
+     - /var/data/website/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
   website:
     build: .
     ports:
       - "5000:5000"
     env_file: .env
-    # restart: always
-    links:
-      - postgres
-  
-  # Use postgres/example user/password credentials
-  postgres:
-    image: postgres
     restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-    volumes:
-      - /var/data/hummingbird/postgres:/var/lib/postgresql/data
+    environment: 
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DATABASE: postgres
+      MYSQL_HOST: db
+      MYSQL_DATABASE: website
+      MYSQL_USER: website
+      MYSQL_PASSWORD: website
+    links:
+      - db
+    depends_on:
+      - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -76,8 +76,9 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 
 func main() {
 
-	initDatabase()
 	router := setupRouter()
+
+	initDatabase()
 
 	log.Printf("HTTP Server Launching...")
 	ret := router.Run(":5000")

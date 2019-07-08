@@ -9,6 +9,7 @@ RUN go get github.com/stretchr/testify/assert
 RUN go get github.com/go-pg/pg
 RUN go get github.com/jinzhu/gorm
 RUN go get github.com/lib/pq
+RUN go get github.com/go-sql-driver/mysql
 
 WORKDIR /go/src/github.com/semiscone/website
 COPY src /go/src/github.com/semiscone/website
@@ -27,7 +28,6 @@ WORKDIR ${WORKDIR}
 
 COPY --from=builder /go/bin/website ${WORKDIR}/website
 COPY src/static ${WORKDIR}/static
-COPY run.sh ${WORKDIR}/
 
 # EXPOSE 5000
 
