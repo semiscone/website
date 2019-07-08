@@ -54,10 +54,14 @@ function wireCards() {
     });
 }
 function shouldHideSidebar() {
+    console.log("widow width: ", $(window).width())
     if ($(window).width() < 768) {
         $('#styleguideSidebar').addClass('sidebar--hidden');
-    } else {
+    } else if ($(window).width() < 1024) {
         $('#styleguideSidebar').addClass('sidebar--mini');
+        $('#styleguideSidebar').removeClass('sidebar--hidden');
+    } else {
+        $('#styleguideSidebar').removeClass('sidebar--mini');
         $('#styleguideSidebar').removeClass('sidebar--hidden');
     }
 }
