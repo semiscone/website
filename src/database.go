@@ -14,7 +14,7 @@ var db *gorm.DB
 func initDatabase() {
 	log.Print("Sleep for database")
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	host := os.Getenv("POSTGRES_HOST")
 	port := 5432

@@ -28,6 +28,7 @@ WORKDIR ${WORKDIR}
 
 COPY --from=builder /go/bin/website ${WORKDIR}/website
 COPY src/static ${WORKDIR}/static
+COPY src/templates ${WORKDIR}/templates
 
 # EXPOSE 5000
 
