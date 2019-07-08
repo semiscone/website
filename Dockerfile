@@ -29,7 +29,6 @@ COPY --from=builder /go/bin/website ${WORKDIR}/website
 COPY src/static ${WORKDIR}/static
 COPY run.sh ${WORKDIR}/
 
-EXPOSE 5000
+# EXPOSE 5000
 
-RUN chmod +x /website/run.sh
-ENTRYPOINT [ "/website/run.sh" ]
+ENTRYPOINT ["/website/website"]
