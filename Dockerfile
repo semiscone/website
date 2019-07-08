@@ -1,5 +1,4 @@
 # Builder
-
 FROM golang:1.12 as builder
 
 RUN go get github.com/gin-contrib/multitemplate
@@ -19,17 +18,18 @@ RUN go install
 
 FROM ubuntu:bionic
 
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
-COPY --from=builder /go/bin/website /website
-
-ARG WORKDIR="/site"
+ARG WORKDIR="/website"
 WORKDIR ${WORKDIR}
-VOLUME  ${WORKDIR}
 
-COPY src/static static
+COPY --from=builder /go/bin/website ${WORKDIR}/website
+COPY src/static ${WORKDIR}/static
+COPY run.sh ${WORKDIR}/
 
 EXPOSE 5000
 
-ENTRYPOINT [ "/website" ]
+RUN chmod +x /website/run.sh
+ENTRYPOINT [ "/website/run.sh" ]
